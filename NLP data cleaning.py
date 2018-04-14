@@ -2,7 +2,7 @@ from docx import Document
 import nltk
 import re
 
-
+#method to find entity group but not accurate
 def extract_entities(clean_sentence):
 	for i in range(len(clean_sentence)):
 		print('---------------------------------------')
@@ -56,10 +56,11 @@ clean_sentence = remove_like_reply(sentence)
 clean_sentence = remove_emoji(clean_sentence)
 print(clean_sentence)
 
-for i in range(len(clean_sentence)):
-	tokens += nltk.word_tokenize(clean_sentence[i])
-text = nltk.Text(tokens)
-print(text.collocations())
+
+# for i in range(len(clean_sentence)):
+# 	tokens += nltk.word_tokenize(clean_sentence[i])
+# text = nltk.Text(tokens)
+# print(text.collocations())
 
 
 
