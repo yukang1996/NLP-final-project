@@ -43,7 +43,7 @@ def remove_emoji(clean_sentence):
 
 
 
-document = Document('C:\\Users\\User\\Desktop\\UM\\Sem 6\\NLP\\NLP part1.docx')
+document = Document('.\\NLP part1.docx')
 sentence = []
 tokens = []
 clean_sentence = []
