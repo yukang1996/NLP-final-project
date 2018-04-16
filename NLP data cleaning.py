@@ -1,7 +1,7 @@
 from docx import Document
 import nltk
 import re
-
+import json
 #method to find entity group but not accurate
 def extract_entities(clean_sentence):
 	for i in range(len(clean_sentence)):
@@ -18,10 +18,13 @@ def extract_entities(clean_sentence):
 
 def remove_like_reply(sentence):
 	clean_sentence = []
+	pattern1 = '^Repl'
 	for i in range(len(sentence)):
 		sentence[i] = sentence[i].split(' ')
 		if(len(sentence[i]) <= 3 or (sentence[i][0] == 'Like' and sentence[i][2] == 'Reply')):
 			#ignore sentence left than 4 words
+			pass
+		elif((re.match(pattern1,sentence[i][1]) != None)==True):
 			pass
 		else:
 			clean_sentence.append(sentence[i])
@@ -36,8 +39,10 @@ def remove_emoji(clean_sentence):
         u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
                            "]+", flags=re.UNICODE)
 	for i in range(len(clean_sentence)):
-		text = str(clean_sentence[i])
-		clean_sentence[i]= emoji_pattern.sub(r' ',text)	
+		# print()
+		# text = str(clean_sentence[i])
+		for j in range(len(clean_sentence[i])):
+			clean_sentence[i][j]= emoji_pattern.sub(r' ',clean_sentence[i][j])	
 			
 	return clean_sentence		
 
@@ -54,9 +59,15 @@ for para in document.paragraphs:
 clean_sentence = remove_like_reply(sentence)
 # extract_entities(clean_sentence)
 clean_sentence = remove_emoji(clean_sentence)
-print(clean_sentence)
+deto_clean_sentence = []
+for i in range(len(clean_sentence)):
+	deto_clean_sentence.append(' '.join(clean_sentence[i]))
+	deto_clean_sentence.append('')
 
-
+new_document = Document()
+# write clean sentence to word doc
+new_document.add_paragraph(deto_clean_sentence)
+new_document.save('nlp cleaned part1.docx')
 # for i in range(len(clean_sentence)):
 # 	tokens += nltk.word_tokenize(clean_sentence[i])
 # text = nltk.Text(tokens)
