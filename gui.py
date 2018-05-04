@@ -60,20 +60,27 @@ def meteprofilling():
         my_text = docx2txt.process(document_name.cget("text")).encode('utf-8').decode('cp437').split('\n')
         textbox2.tag_config("n", background="yellow", foreground="red")
         keyword = []
-
+        print(my_text)
         for a in my_text:
-            test = a.split(" ")
-            join_word = test[0] + " " + test[1]
-            if join_word not in keyword:
-                keyword.append(join_word)
+            print(a)
+            if a == '':
+                pass
+            else:
+                test = a.split(" ")
+                join_word = test[0] + " " + test[1]
+                if join_word not in keyword:
+                    keyword.append(join_word)
 
         for a in keyword:
             textbox2.insert(INSERT, "Keyword: "+a+"\n","n")
             for b in my_text:
-                test = b.split(" ")
-                join_word = test[0] + " " + test[1]
-                if join_word == a:
-                    textbox2.insert(INSERT, b+"\n")
+                if b == '':
+                    pass
+                else:
+                    test = b.split(" ")
+                    join_word = test[0] + " " + test[1]
+                    if join_word == a:
+                        textbox2.insert(INSERT, b+"\n")
     except IOError as e:
         tkMessageBox.showinfo("Error!!", e)
 
@@ -83,7 +90,7 @@ def clear():
 
 window = Tk()
 window.title("Welcome to GoodDocument app")
-window.geometry('1000x500')
+window.geometry('1370x720')
 
 left_frame = LabelFrame(window)
 left_frame.place(width=100,height=700,x=0,y=0)
