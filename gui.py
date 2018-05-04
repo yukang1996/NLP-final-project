@@ -38,7 +38,7 @@ def list_of_file():
         Lb1.insert(number, i)
         number = number+1
     Lb1.pack()
-    Lb1.bind('<ButtonRelease-1>',lambda e: CurSelet(Lb1,top))
+    Lb1.bind('<Double-Button-1>',lambda e: CurSelet(Lb1,top))
     scrollbar1.config(command=Lb1.yview)
 
 def CurSelet(Lbl,top):
