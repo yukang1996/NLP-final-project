@@ -3,9 +3,10 @@ import tkinter.messagebox as tkMessageBox
 from tkinter.filedialog import askopenfilename
 import docx2txt
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, dirname, abspath
 
-file_path = "C:/Users/Badrul/Desktop/NLP-final-project/documents"
+
+file_path = dirname(abspath(__file__))+"\documents"
 onlyfiles = [f for f in listdir(file_path) if isfile(join(file_path, f))]
 
 def _on_click(event):
