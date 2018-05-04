@@ -29,12 +29,17 @@ def insert_file():
 
 def list_of_file():
     top = Toplevel(window)
-    Lb1 = Listbox(top)
+    scrollbar1 = Scrollbar(top)
+    scrollbar1.pack(side=RIGHT, fill=Y)
+    top.title("Please choose file from below.")
+    Lb1 = Listbox(top,width=50,height=30)
     number = 1
     for i in onlyfiles:
         Lb1.insert(number, i)
+        number = number+1
     Lb1.pack()
-    Lb1.bind('<<ListboxSelect>>',lambda e: CurSelet(Lb1,top))
+    Lb1.bind('<ButtonRelease-1>',lambda e: CurSelet(Lb1,top))
+    scrollbar1.config(command=Lb1.yview)
 
 def CurSelet(Lbl,top):
     value="documents/"+str((Lbl.get(ACTIVE)))
