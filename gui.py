@@ -1,8 +1,12 @@
 from tkinter import *
 import tkinter.messagebox as tkMessageBox
+from tkinter.filedialog import askopenfilename
 import docx2txt
+from os import listdir
+from os.path import isfile, join
 
-# TEST
+file_path = "C:/Users/Badrul/Desktop/NLP-final-project/documents"
+onlyfiles = [f for f in listdir(file_path) if isfile(join(file_path, f))]
 
 def _on_click(event):
     textbox1.tag_config("n", foreground="red")
@@ -13,24 +17,32 @@ def fix():
     textbox1.insert("insert lineend", "\nHello to you too.", "n")
 
 def insert_file():
-    top = Toplevel(window)
-    label = Label(top,text="Please enter the document name.")
-    label.place(x=0,y=0)
-    file = Entry(top, bd=5)
-    file.place(x=0,y=30)
-    btn2 = Button(top, text="OK", command = lambda: insert_file_to_textbox(top,file))
-    btn2.place(x=120, y=30)
-
-def insert_file_to_textbox(top,file):
-    doc = "documents/" + file.get() + ".docx"
+    filename = askopenfilename()
     try:
-        my_text = docx2txt.process(doc).encode('utf-8').decode('cp437').split('\n')
+        my_text = docx2txt.process(filename).encode('utf-8').decode('cp437').split('\n')
         for i in range(len(my_text)):
             textbox1.insert(INSERT, my_text[i] + "\n")
-            # textbox1.bind("<ButtonRelease-1>", _on_click)
-            # textbox1.tag_configure("highlight", background="green", foreground="black")
-            document_name["text"] = doc
-    except IOError as e:
+            document_name["text"] = filename
+    except Exception as e:
+        tkMessageBox.showinfo("Error!!", e)
+
+def list_of_file():
+    top = Toplevel(window)
+    Lb1 = Listbox(top)
+    number = 1
+    for i in onlyfiles:
+        Lb1.insert(number, i)
+    Lb1.pack()
+    Lb1.bind('<<ListboxSelect>>',lambda e: CurSelet(Lb1,top))
+
+def CurSelet(Lbl,top):
+    value="documents/"+str((Lbl.get(ACTIVE)))
+    try:
+        my_text = docx2txt.process(value).encode('utf-8').decode('cp437').split('\n')
+        for i in range(len(my_text)):
+            textbox1.insert(INSERT, my_text[i] + "\n")
+            document_name["text"] = value
+    except Exception as e:
         tkMessageBox.showinfo("Error!!", e)
 
     top.withdraw()
@@ -51,12 +63,10 @@ def meteprofilling():
 
         for a in keyword:
             textbox2.insert(INSERT, "Keyword: "+a+"\n","n")
-            # print("Keyword: "+a)
             for b in my_text:
                 test = b.split(" ")
                 join_word = test[0] + " " + test[1]
                 if join_word == a:
-                    # print(b)
                     textbox2.insert(INSERT, b+"\n")
     except IOError as e:
         tkMessageBox.showinfo("Error!!", e)
@@ -96,7 +106,7 @@ textbox2 = Text( right_frame, width=71,height=43 )
 textbox2.place(x=0,y=0)
 
 # Button
-btn = Button(left_frame, text="Insert file", command=insert_file)
+btn = Button(left_frame, text="Insert file", command=list_of_file)
 btn.place(x=0,y=0)
 
 btn = Button(left_frame, text="Metaprofilling", command=meteprofilling)
