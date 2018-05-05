@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6b255124-a47b-428b-9f12-8d7d17ebe171" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/gui.py" afterPath="$PROJECT_DIR$/gui.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,8 +17,8 @@
       <file leaf-file-name="gui.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gui.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="483">
-              <caret line="40" column="14" lean-forward="false" selection-start-line="40" selection-start-column="14" selection-end-line="40" selection-end-column="31" />
+            <state relative-caret-position="230">
+              <caret line="177" column="47" lean-forward="true" selection-start-line="177" selection-start-column="47" selection-end-line="177" selection-end-column="47" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -26,6 +27,12 @@
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>my_text</find>
+      <find>cleaned</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -64,6 +71,11 @@
             <path>
               <item name="NLP-final-project" type="b2602c69:ProjectViewProjectNode" />
               <item name="NLP-final-project" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="NLP-final-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="NLP-final-project" type="462c0819:PsiDirectoryNode" />
+              <item name="documents" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -147,8 +159,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gui.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="40" column="14" lean-forward="false" selection-start-line="40" selection-start-column="14" selection-end-line="40" selection-end-column="31" />
+        <state relative-caret-position="230">
+          <caret line="177" column="47" lean-forward="true" selection-start-line="177" selection-start-column="47" selection-end-line="177" selection-end-column="47" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>

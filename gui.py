@@ -12,6 +12,7 @@ onlyfiles = [f for f in listdir(file_path) if isfile(join(file_path, f))]
 my_text = []
 
 
+
 def _on_click(event):
     textbox1.tag_config("n", foreground="red")
     textbox1.insert("insert lineend","\nHello to you too.","n")
@@ -19,20 +20,12 @@ def _on_click(event):
 def fix():
     textbox1.tag_config("n", foreground="red")
     #azwan add code here. I wan to assign current line which i click on textbox into input.
-    input = textbox1.get(CURRENT)
+    input = textbox1.get("insert linestart","insert lineend")
+    # print(input)
+    tkMessageBox.showinfo("Get Sentence", input)
     
     # print(abr.noisy_channel('tyol', abr.big_lang_m, abr.big_err_m))
-    textbox1.insert("insert lineend", "\nHello to you too.", "n")
-
-def insert_file():
-    filename = askopenfilename()
-    try:
-        my_text = docx2txt.process(filename).encode('utf-8').decode('cp437').split('\n')
-        for i in range(len(my_text)):
-            textbox1.insert(INSERT, my_text[i] + "\n")
-            document_name["text"] = filename
-    except Exception as e:
-        tkMessageBox.showinfo("Error!!", e)
+    # textbox1.insert("insert lineend", "\nHello to you too.", "n")
 
 def list_of_file():
     top = Toplevel(window)
@@ -53,6 +46,9 @@ def CurSelet(Lbl,top):
     value="documents/"+str((Lbl.get(ACTIVE)))
     try:
         my_text = docx2txt.process(value).encode('utf-8').decode('cp437').split('\n')
+        global cleaned
+        cleaned = False
+        textbox1.delete("1.0",END)
         for i in range(len(my_text)):
             textbox1.insert(INSERT, my_text[i] + "\n")
             document_name["text"] = value
@@ -64,31 +60,38 @@ def CurSelet(Lbl,top):
 
 def meteprofilling():
     try:
-        textbox2.tag_config("n", background="yellow", foreground="red")
-        keyword = []
-        print(my_text)
-        for a in my_text:
-            print(a)
-            if a == '':
-                pass
-            else:
-                test = a.split(" ")
-                join_word = test[0] + " " + test[1]
-                if join_word not in keyword:
-                    keyword.append(join_word)
+        if cleaned:
+            try:
+                textbox2.delete("1.0", END)
+                textbox2.tag_config("n", background="yellow", foreground="red")
+                keyword = []
+                for a in my_text:
+                    if a == '':
+                        pass
+                    else:
+                        test = a.split(" ")
+                        join_word = test[0] + " " + test[1]
+                        if join_word not in keyword:
+                            keyword.append(join_word)
 
-        for a in keyword:
-            textbox2.insert(INSERT, "Keyword: "+a+"\n","n")
-            for b in my_text:
-                if b == '':
-                    pass
-                else:
-                    test = b.split(" ")
-                    join_word = test[0] + " " + test[1]
-                    if join_word == a:
-                        textbox2.insert(INSERT, b+"\n")
-    except IOError as e:
-        tkMessageBox.showinfo("Error!!", e)
+                for a in keyword:
+                    textbox2.insert(INSERT, "Keyword: "+a+"\n","n")
+                    for b in my_text:
+                        if b == '':
+                            pass
+                        else:
+                            test = b.split(" ")
+                            join_word = test[0] + " " + test[1]
+                            if join_word == a:
+                                textbox2.insert(INSERT, b+"\n")
+            except IOError as e:
+                tkMessageBox.showinfo("Error!!", e)
+        else:
+            tkMessageBox.showinfo("Error!!", "The file is not been cleaned yet.")
+
+    except NameError as e:
+        pass
+
 
 def remove_like_reply(sentence):
     clean_sentence = []
@@ -170,6 +173,8 @@ def splitSentence2Tokens(sentence):
 
 def clean():
     global my_text
+    global cleaned
+    cleaned = True
     clean_sentence = remove_like_reply(my_text)
 # extract_entities(clean_sentence)
     clean_sentence = remove_emoji(clean_sentence)
@@ -237,4 +242,5 @@ btn.place(x=0,y=153)
 
 scrollbar1.config( command = textbox1.yview )
 scrollbar2.config( command = textbox2.yview )
+
 window.mainloop()
