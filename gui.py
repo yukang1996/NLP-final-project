@@ -4,7 +4,7 @@ from tkinter.filedialog import askopenfilename
 import docx2txt
 from os import listdir
 from os.path import isfile, join, dirname, abspath
-# import nlpAbbreviation as abr
+import nlpAbbreviation as abr
 
 
 file_path = dirname(abspath(__file__))+"\documents"
@@ -17,15 +17,32 @@ def _on_click(event):
     textbox1.tag_config("n", foreground="red")
     textbox1.insert("insert lineend","\nHello to you too.","n")
 
+def joinTokens2Words(tokens):
+    deto_clean_sentence = ' '.join(tokens)
+    # deto_clean_sentence = list(map(lambda token: ' '.join(token), tokens))
+    # deto_sentence = []
+    # for token in tokens:
+    #   deto_sentence.append(' '.join(token))
+    return deto_clean_sentence
+
 def fix():
     textbox1.tag_config("n", foreground="red")
-    #azwan add code here. I wan to assign current line which i click on textbox into input.
     input = textbox1.get("insert linestart","insert lineend")
     # print(input)
     tkMessageBox.showinfo("Get Sentence", input)
-    
-    # print(abr.noisy_channel('tyol', abr.big_lang_m, abr.big_err_m))
-    # textbox1.insert("insert lineend", "\nHello to you too.", "n")
+    words = input.split(' ')
+    after_abbrev = []
+    for i in range(len(words)):
+        try:
+            print(words[i])
+            after_abbrev.append(abr.noisy_channel(words[i], abr.big_lang_m, abr.big_err_m))
+        except:
+            print('%s cannot found'%words[i])
+            after_abbrev.append(words[i])
+
+    sentence = joinTokens2Words(after_abbrev)
+    sentence = ' '.join(sentence.split())
+    textbox1.insert("insert lineend", "\n"+sentence, "n")
 
 def list_of_file():
     top = Toplevel(window)
