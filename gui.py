@@ -4,10 +4,13 @@ from tkinter.filedialog import askopenfilename
 import docx2txt
 from os import listdir
 from os.path import isfile, join, dirname, abspath
+# import nlpAbbreviation as abr
 
 
 file_path = dirname(abspath(__file__))+"\documents"
 onlyfiles = [f for f in listdir(file_path) if isfile(join(file_path, f))]
+my_text = []
+
 
 def _on_click(event):
     textbox1.tag_config("n", foreground="red")
@@ -15,6 +18,10 @@ def _on_click(event):
 
 def fix():
     textbox1.tag_config("n", foreground="red")
+    #azwan add code here. I wan to assign current line which i click on textbox into input.
+    input = textbox1.get(CURRENT)
+    
+    # print(abr.noisy_channel('tyol', abr.big_lang_m, abr.big_err_m))
     textbox1.insert("insert lineend", "\nHello to you too.", "n")
 
 def insert_file():
@@ -42,6 +49,7 @@ def list_of_file():
     scrollbar1.config(command=Lb1.yview)
 
 def CurSelet(Lbl,top):
+    global my_text
     value="documents/"+str((Lbl.get(ACTIVE)))
     try:
         my_text = docx2txt.process(value).encode('utf-8').decode('cp437').split('\n')
@@ -50,14 +58,12 @@ def CurSelet(Lbl,top):
             document_name["text"] = value
     except Exception as e:
         tkMessageBox.showinfo("Error!!", e)
-
     top.withdraw()
 
 
 
 def meteprofilling():
     try:
-        my_text = docx2txt.process(document_name.cget("text")).encode('utf-8').decode('cp437').split('\n')
         textbox2.tag_config("n", background="yellow", foreground="red")
         keyword = []
         print(my_text)
@@ -83,6 +89,101 @@ def meteprofilling():
                         textbox2.insert(INSERT, b+"\n")
     except IOError as e:
         tkMessageBox.showinfo("Error!!", e)
+
+def remove_like_reply(sentence):
+    clean_sentence = []
+    pattern1 = '^Repl'
+    for i in range(len(sentence)):
+        sentence[i] = sentence[i].split(' ')
+        if(len(sentence[i]) <= 3 or (sentence[i][0] == 'Like' and sentence[i][2] == 'Reply')):
+            #ignore sentence left than 4 words
+            pass
+        elif((re.match(pattern1,sentence[i][1]) != None)==True):
+            pass
+        else:
+            clean_sentence.append(sentence[i])
+        
+    return clean_sentence
+
+
+def remove_emoji(clean_sentence):
+    emoji_pattern = re.compile("["
+        u"\U00000021-\U0000002F" #symbols !"#$%^.
+        u"\U0001F600-\U0001F64F"  # emoticons
+        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+        u"\U0001F680-\U0001F6FF"  # transport & map symbols
+        u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+                           "]+", flags=re.UNICODE)
+    for i in range(len(clean_sentence)):
+        # print()
+        # text = str(clean_sentence[i])
+        for j in range(len(clean_sentence[i])):
+            clean_sentence[i][j]= emoji_pattern.sub(r' ',clean_sentence[i][j])  
+            print('xxxxxx '+clean_sentence[i][j])
+    return clean_sentence
+
+def remove_wordEmoticon(clean_sentence):
+    for sentence in clean_sentence:
+        word_index_to_be_delete = []
+        for i in range(len(sentence)):
+            sentence[i] = " ".join(sentence[i].split())
+            if(sentence[i].lower() == "emoticon"):
+                sentence[i]=""
+                sentence[i-1]=""
+    return clean_sentence
+
+
+
+def removeNumtoWords(clean_sentence):
+    pattern = re.compile(r'([A-z]){1,}\d+')
+    for sentence in clean_sentence:
+        for i in range(len(sentence)):
+            try:
+                if(pattern.match(sentence[i])):
+                    new_word = ''
+                    for j in range(int(sentence[i][-1])):
+                        new_word = new_word +' '+sentence[i][:-1]
+
+                    sentence[i] = new_word
+            except:
+                print(sentence[i]+' gt error.')
+
+    return clean_sentence
+
+# f = lambda x: x*2
+# f(2)
+#map ~ list.append
+#parallel processing, faster than forloop list.append
+
+def joinTokens2Sentence(tokens):
+    deto_clean_sentence = list(map(lambda token: ' '.join(token), tokens))
+    # deto_sentence = []
+    # for token in tokens:
+    #   deto_sentence.append(' '.join(token)) 
+    return deto_clean_sentence
+
+def splitSentence2Tokens(sentence):
+    tokens = []
+    for i in range(len(sentence)):
+        tokens.append(sentence[i].split(' '))
+    return tokens
+
+def clean():
+    global my_text
+    clean_sentence = remove_like_reply(my_text)
+# extract_entities(clean_sentence)
+    clean_sentence = remove_emoji(clean_sentence)
+    clean_sentence = joinTokens2Sentence(clean_sentence)
+    clean_sentence = splitSentence2Tokens(clean_sentence)
+    clean_sentence = remove_wordEmoticon(clean_sentence)
+    clean_sentence = removeNumtoWords(clean_sentence)
+    clean_sentence = joinTokens2Sentence(clean_sentence)
+    clear()
+    for a in clean_sentence:
+        print(a)
+        textbox1.insert(INSERT,a+"\n")
+    my_text = clean_sentence
+
 
 def clear():
     textbox1.delete('1.0', END)
@@ -125,7 +226,7 @@ btn.place(x=0,y=0)
 btn = Button(left_frame, text="Metaprofilling", command=meteprofilling)
 btn.place(x=0,y=33)
 
-btn = Button(left_frame, text="Clean", command=clear)
+btn = Button(left_frame, text="Clean", command=clean)
 btn.place(x=0,y=73)
 
 btn = Button(left_frame, text="Fix", command=fix)

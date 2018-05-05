@@ -300,12 +300,14 @@ missing_set =  (
     + [('aeiouy', '------')] * 30 # only vowels are missing
 )
 # Train the both models
+global big_lang_m
 big_lang_m = LanguageNgramModel(order=4, smoothing=0.001, recursive=0.01)
 big_lang_m.fit(text2)
+global big_err_m
 big_err_m = MissingLetterModel(order=0, smoothing_missed=0.1)
 big_err_m.fit(missing_set)
 #5ngram
-for i in range(5):
+for i in range(1):
     tmp = LanguageNgramModel(i, 0.001, 0.01)
     tmp.fit(text2[0:-5000]) #train 
     print(i, tmp.single_log_proba(' ', text2[-5000:])) #left 5000 for testing
@@ -352,8 +354,8 @@ for i in range(5):
 # new_document.add_paragraph(sentence)
 # new_document.save('nlp abbrev.docx')
 
-print(noisy_channel('tyol', big_lang_m, big_err_m))
-print(noisy_channel('jdh', big_lang_m, big_err_m))
+# print(noisy_channel('tyol', big_lang_m, big_err_m))
+# print(noisy_channel('jdh', big_lang_m, big_err_m))
 # print(noisy_channel('mlm', big_lang_m, big_err_m, freedom=5))
 #higher freedom means allow more probability
 #lesser value means higher probability
