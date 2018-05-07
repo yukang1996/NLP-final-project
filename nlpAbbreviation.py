@@ -4,6 +4,11 @@ import tkinter.messagebox as tkMessageBox
 import numpy as np
 import pandas as pd
 
+
+window = Tk()
+window.title("GoodDocument app")
+window.geometry("300x100")
+
 class LanguageNgramModel:
     """ 
     The model remembers and predicts which letters follow which.
@@ -287,6 +292,15 @@ def noisy_channel(word, lang_model, missed_model, freedom=3.0,
 # result = noisy_channel('brc', lang_model, missed_model, verbose=True, freedom=1)
 # print(result)
 
+def calculate():
+    # if showWindow:
+    # for i in range(5):
+    #     tmp = LanguageNgramModel(i, 0.001, 0.01)
+    #     tmp.fit(text2[0:-5000])  # train
+    #     print(i, tmp.single_log_proba(' ', text2[-5000:]))  # left 5000 for testing
+
+    window.destroy()
+
 import re
 # read the text
 with open('.\\melayu-utf8.txt', encoding = 'utf-8') as f:
@@ -310,11 +324,14 @@ big_err_m = MissingLetterModel(order=0, smoothing_missed=0.1)
 big_err_m.fit(missing_set)
 #5ngram
 
-# if showWindow:
-for i in range(5):
-    tmp = LanguageNgramModel(i, 0.001, 0.01)
-    tmp.fit(text2[0:-5000])  # train
-    print(i, tmp.single_log_proba(' ', text2[-5000:]))  # left 5000 for testing
+
+loading = Label(window, text="Welcome to GoodDocument App")
+loading.pack(side=TOP)
+
+button = Button(window, text="Start", command=calculate)
+button.pack(side = BOTTOM)
+
+window.mainloop()
 
 
 # from docx import Document

@@ -29,7 +29,18 @@ def fix():
     textbox1.tag_config("n", foreground="red")
     input = textbox1.get("insert linestart","insert lineend")
     # print(input)
-    tkMessageBox.showinfo("Get Sentence", input)
+    # tkMessageBox.showinfo("Get Sentence", input)
+    fix_sentence = Toplevel()
+    fix_sentence.geometry("300x100")
+
+    label1 = Label(fix_sentence,text="Do you want to fix this sentence?:\n"+input)
+    label1.pack(side=TOP)
+    ok_button = Button(fix_sentence,text="OK", command = lambda : fix2(input,fix_sentence))
+    ok_button.pack(side=TOP)
+    cancel_button = Button(fix_sentence, text="CANCEL", command= lambda : fix_sentence.destroy())
+    cancel_button.pack(side=TOP)
+
+def fix2(input,fix_sentence):
     words = input.split(' ')
     after_abbrev = []
     for i in range(len(words)):
@@ -37,12 +48,13 @@ def fix():
             print(words[i])
             after_abbrev.append(abr.noisy_channel(words[i], abr.big_lang_m, abr.big_err_m))
         except:
-            print('%s cannot found'%words[i])
+            print('%s cannot found' % words[i])
             after_abbrev.append(words[i])
-
+    fix_sentence.destroy()
     sentence = joinTokens2Words(after_abbrev)
     sentence = ' '.join(sentence.split())
-    textbox1.insert("insert lineend", "\n"+sentence, "n")
+    textbox1.insert("insert lineend", "\n" + sentence, "n")
+
 
 def list_of_file():
     top = Toplevel(window)
@@ -192,19 +204,19 @@ def clean():
     global my_text
     global cleaned
     cleaned = True
-#     clean_sentence = remove_like_reply(my_text)
-# # extract_entities(clean_sentence)
-#     clean_sentence = remove_emoji(clean_sentence)
-#     clean_sentence = joinTokens2Sentence(clean_sentence)
-#     clean_sentence = splitSentence2Tokens(clean_sentence)
-#     clean_sentence = remove_wordEmoticon(clean_sentence)
-#     clean_sentence = removeNumtoWords(clean_sentence)
-#     clean_sentence = joinTokens2Sentence(clean_sentence)
-#     clear()
-#     for a in clean_sentence:
-#         print(a)
-#         textbox1.insert(INSERT,a+"\n")
-#     my_text = clean_sentence
+    clean_sentence = remove_like_reply(my_text)
+# extract_entities(clean_sentence)
+    clean_sentence = remove_emoji(clean_sentence)
+    clean_sentence = joinTokens2Sentence(clean_sentence)
+    clean_sentence = splitSentence2Tokens(clean_sentence)
+    clean_sentence = remove_wordEmoticon(clean_sentence)
+    clean_sentence = removeNumtoWords(clean_sentence)
+    clean_sentence = joinTokens2Sentence(clean_sentence)
+    clear()
+    for a in clean_sentence:
+        print(a)
+        textbox1.insert(INSERT,a+"\n")
+    my_text = clean_sentence
 
 
 def clear():
@@ -212,7 +224,13 @@ def clear():
     textbox2.delete('1.0', END)
     document_name["text"] = ""
 
-print("here")
+def transate():
+    pass
+
+def tree():
+    pass
+
+
 window = Tk()
 window.title("Welcome to GoodDocument app")
 window.geometry('1370x720')
@@ -256,8 +274,14 @@ btn.place(x=0,y=73)
 btn = Button(left_frame, text="Fix", command=fix)
 btn.place(x=0,y=113)
 
-btn = Button(left_frame, text="Clear", command=clear)
+btn = Button(left_frame, text="Translate", command=transate)
 btn.place(x=0,y=153)
+
+btn = Button(left_frame, text="Tree", command=tree)
+btn.place(x=0,y=193)
+
+btn = Button(left_frame, text="Clear", command=clear)
+btn.place(x=0,y=233)
 
 scrollbar1.config( command = textbox1.yview )
 scrollbar2.config( command = textbox2.yview )
