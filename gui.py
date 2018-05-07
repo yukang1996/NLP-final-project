@@ -175,24 +175,25 @@ def clean():
     global my_text
     global cleaned
     cleaned = True
-    clean_sentence = remove_like_reply(my_text)
-# extract_entities(clean_sentence)
-    clean_sentence = remove_emoji(clean_sentence)
-    clean_sentence = joinTokens2Sentence(clean_sentence)
-    clean_sentence = splitSentence2Tokens(clean_sentence)
-    clean_sentence = remove_wordEmoticon(clean_sentence)
-    clean_sentence = removeNumtoWords(clean_sentence)
-    clean_sentence = joinTokens2Sentence(clean_sentence)
-    clear()
-    for a in clean_sentence:
-        print(a)
-        textbox1.insert(INSERT,a+"\n")
-    my_text = clean_sentence
+#     clean_sentence = remove_like_reply(my_text)
+# # extract_entities(clean_sentence)
+#     clean_sentence = remove_emoji(clean_sentence)
+#     clean_sentence = joinTokens2Sentence(clean_sentence)
+#     clean_sentence = splitSentence2Tokens(clean_sentence)
+#     clean_sentence = remove_wordEmoticon(clean_sentence)
+#     clean_sentence = removeNumtoWords(clean_sentence)
+#     clean_sentence = joinTokens2Sentence(clean_sentence)
+#     clear()
+#     for a in clean_sentence:
+#         print(a)
+#         textbox1.insert(INSERT,a+"\n")
+#     my_text = clean_sentence
 
 
 def clear():
     textbox1.delete('1.0', END)
     textbox2.delete('1.0', END)
+    document_name["text"] = ""
 
 window = Tk()
 window.title("Welcome to GoodDocument app")
@@ -218,10 +219,10 @@ scrollbar2 = Scrollbar(right_frame)
 scrollbar2.pack( side = RIGHT, fill = Y )
 
 # Text (User input for multiple line)
-textbox1 = Text( middle_frame, width=77,height=43 )
+textbox1 = Text( middle_frame,yscrollcommand=scrollbar1.set, width=77,height=43 )
 textbox1.place(x=0,y=21)
 
-textbox2 = Text( right_frame, width=71,height=43 )
+textbox2 = Text( right_frame,yscrollcommand=scrollbar2.set, width=71,height=43 )
 textbox2.place(x=0,y=0)
 
 # Button
