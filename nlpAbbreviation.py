@@ -1,4 +1,6 @@
 from collections import defaultdict, Counter
+from tkinter import *
+import tkinter.messagebox as tkMessageBox
 import numpy as np
 import pandas as pd
 
@@ -307,10 +309,13 @@ global big_err_m
 big_err_m = MissingLetterModel(order=0, smoothing_missed=0.1)
 big_err_m.fit(missing_set)
 #5ngram
+
+# if showWindow:
 for i in range(5):
     tmp = LanguageNgramModel(i, 0.001, 0.01)
-    tmp.fit(text2[0:-5000]) #train 
-    print(i, tmp.single_log_proba(' ', text2[-5000:])) #left 5000 for testing
+    tmp.fit(text2[0:-5000])  # train
+    print(i, tmp.single_log_proba(' ', text2[-5000:]))  # left 5000 for testing
+
 
 # from docx import Document
 # import nltk

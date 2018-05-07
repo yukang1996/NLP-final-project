@@ -212,6 +212,7 @@ def clear():
     textbox2.delete('1.0', END)
     document_name["text"] = ""
 
+print("here")
 window = Tk()
 window.title("Welcome to GoodDocument app")
 window.geometry('1370x720')
