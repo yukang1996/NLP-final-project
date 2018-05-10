@@ -5,6 +5,9 @@ import docx2txt
 from os import listdir
 from os.path import isfile, join, dirname, abspath
 import nlpAbbreviation as abr
+import AbbreCorpus as ac
+import textblob as tb
+import nltk
 
 
 file_path = dirname(abspath(__file__))+"\documents"
@@ -31,7 +34,7 @@ def fix():
     # print(input)
     # tkMessageBox.showinfo("Get Sentence", input)
     fix_sentence = Toplevel()
-    fix_sentence.geometry("300x100")
+    fix_sentence.geometry("700x100")
 
     label1 = Label(fix_sentence,text="Do you want to fix this sentence?:\n"+input)
     label1.pack(side=TOP)
@@ -43,13 +46,20 @@ def fix():
 def fix2(input,fix_sentence):
     words = input.split(' ')
     after_abbrev = []
+    temp = ''
+    excelfile = ac.readCorpus()
     for i in range(len(words)):
-        try:
-            print(words[i])
-            after_abbrev.append(abr.noisy_channel(words[i], abr.big_lang_m, abr.big_err_m))
-        except:
-            print('%s cannot found' % words[i])
-            after_abbrev.append(words[i])
+        #check dictionary
+        temp = ac.findWords(words[i],excelfile)
+        if(temp == ''):
+            try:
+                print(words[i])
+                after_abbrev.append(abr.noisy_channel(words[i], abr.big_lang_m, abr.big_err_m))
+            except:
+                print('%s cannot found' % words[i])
+                after_abbrev.append(words[i])
+        else:
+            after_abbrev.append(temp)
     fix_sentence.destroy()
     sentence = joinTokens2Words(after_abbrev)
     sentence = ' '.join(sentence.split())
@@ -224,11 +234,25 @@ def clear():
     textbox2.delete('1.0', END)
     document_name["text"] = ""
 
-def transate():
-    pass
+def translate():
+    input = textbox1.get("insert linestart","insert lineend")
+    print(input)
+    text = tb.TextBlob(input)
+    print(text.detect_language())
+    translated = text.translate(to='en')
+    print(translated)
+    print(type(translated))
+    textbox1.tag_config("n", foreground="green")
+    textbox1.insert("insert lineend", "\n" + str(translated), "n")
 
 def tree():
-    pass
+    grammar = "NP: {<DT>?<JJ>*<NN>}"
+    NPChunker = nltk.RegexpParser(grammar)
+    input = textbox1.get("insert linestart","insert lineend")
+    result = NPChunker.parse(nltk.pos_tag(input.split(" ")))
+    print(result)
+    parsetree = nltk.Tree.fromstring(str(result))
+    parsetree.draw()
 
 
 window = Tk()
@@ -274,7 +298,7 @@ btn.place(x=0,y=73)
 btn = Button(left_frame, text="Fix", command=fix)
 btn.place(x=0,y=113)
 
-btn = Button(left_frame, text="Translate", command=transate)
+btn = Button(left_frame, text="Translate", command=translate)
 btn.place(x=0,y=153)
 
 btn = Button(left_frame, text="Tree", command=tree)
