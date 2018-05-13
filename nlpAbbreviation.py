@@ -294,7 +294,7 @@ def noisy_channel(word, lang_model, missed_model, freedom=3.0,
 
 def calculate():
     
-    for i in range(1):
+    for i in range(5):
         tmp = LanguageNgramModel(i, 0.001, 0.01)
         tmp.fit(text2[0:-5000])  # train
         print(i, tmp.single_log_proba(' ', text2[-5000:]))  # left 5000 for testing
