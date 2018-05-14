@@ -21,9 +21,9 @@ NLTK, Textblob, python-docx and etc.
 
 ## Folder Structure
  * Documents (Contains Unprocessed and Processed Documents)
- 1. nlpabbreviation.py (Codes for taking care of abbreviation using n-gram)
- 2. nlp data cleaning.py (Codes for cleaning data)
- 3. gui.py (Main file to start the GUI)
+ * -----nlpabbreviation.py (Codes for taking care of abbreviation using n-gram)
+ * -----nlp data cleaning.py (Codes for cleaning data)
+ * -----gui.py (Main file to start the GUI)
 
  ## Steps to run the code
  1. Open Command Prompt (For Anaconda or other environment, you need to open Anaconda Prompt and Activate the required environment.)
